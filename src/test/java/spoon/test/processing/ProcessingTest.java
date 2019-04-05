@@ -36,10 +36,7 @@ import spoon.reflect.declaration.CtMethod;
 import spoon.reflect.declaration.CtType;
 import spoon.reflect.visitor.filter.TypeFilter;
 import spoon.support.compiler.jdt.JDTBasedSpoonCompiler;
-import spoon.test.processing.processors.RenameProcessor;
-import spoon.test.processing.processors.CtClassProcessor;
-import spoon.test.processing.processors.CtInterfaceProcessor;
-import spoon.test.processing.processors.CtTypeProcessor;
+import spoon.test.processing.processors.*;
 import spoon.testing.utils.ProcessorUtils;
 
 import java.io.File;
@@ -430,5 +427,18 @@ public class ProcessingTest {
 		assertFalse(fileContent.contains("import spoon.test.processing.testclasses.test.sub.A;"));
 		assertTrue(fileContent.contains("import spoon.test.processing.testclasses.test.sub.D;"));
 		assertTrue(fileContent.contains("private D a = new D();"));
+	}
+
+	@Test
+	public void testCatchParameterAnnotationProcessor() {
+		Launcher spoon = new Launcher();
+		spoon.addInputResource("./src/test/java/spoon/test/processing/testclasses/CatchAnnotationExampleClass.java");
+
+		CatchAnnotationProcessor catchAnnotationProcessor = new CatchAnnotationProcessor();
+		spoon.addProcessor(catchAnnotationProcessor);
+
+		spoon.run();
+
+		assertTrue(catchAnnotationProcessor.successfullyDetected);
 	}
 }
